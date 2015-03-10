@@ -1,0 +1,29 @@
+p
+  a href="/about/"
+    | About
+h1 BBS
+ul
+  - @comments.each do |comment|
+    li data-id="#{comment.id}"
+      span.comment-body
+        = comment.body
+      span.delete-btn
+h2
+  | Add New
+form method="post" action="/new"
+  input type="text" name="body"
+  input type="submit" value="Post"
+
+javascript:
+  $(function() {
+    $('.delete-btn').on('click', function(e) {
+      var $el = $(this).parent();
+      if (confirm('Are you sure to delete?')) {
+        $.post('/delete', {
+          id: $el.data('id')
+        }, function() {
+          $el.fadeOut(500);
+        });
+      }
+    });
+  });
